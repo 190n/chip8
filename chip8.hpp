@@ -62,8 +62,15 @@ public:
     void opFX18(); // sound timer = VX
     void opFX1E(); // I += VX
     void opFX29(); // I = sprite for char in VX
+    void opFX33(); // decimal representation of VX into I, I+1, I+2
     void opFX55(); // dump registers into memory
     void opFX65(); // load memory into registers
 
     void debug();
+    void opInvalid();
+
+    static bool opcodeTablesBulit;
+    static void buildOpcodeTables();
 };
+
+bool chip8::opcodeTablesBulit = false;

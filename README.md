@@ -41,6 +41,6 @@ be trickier.
 TODO
 ----
 
-- [ ] array of function pointers instead of massive switch statement
+- [x] array of function pointers instead of massive switch statement
 - [ ] actual audio support
 - [ ] test all the opcodes
