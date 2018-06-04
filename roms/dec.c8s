@@ -1,0 +1,20 @@
+C0 FF
+A _location
+F0 33
+F2 65
+00 00
+63 05
+64 0A
+F0 29
+30 00
+D5 55
+F1 29
+31 00
+D3 55
+F2 29
+D4 55
+
+_loop:
+1 _loop
+
+_location:

@@ -1,0 +1,72 @@
+#!/usr/bin/python3
+
+from sys import argv
+from os.path import isfile
+
+def normalize(line):
+    return line.split(';')[0].strip()
+
+if len(argv) != 3:
+    print('usage: %s <in> <out>' % argv[0])
+    quit()
+
+ifile = argv[1]
+ofile = argv[2]
+
+if isfile(ofile):
+    print('file %s exists, overwrite? [yN] ' % ofile, end='')
+    if input().lower() != 'y':
+        print('not overwriting')
+        quit()
+
+ifd = open(ifile, 'r')
+asm = ifd.read()
+ifd.close()
+
+lines = map(normalize, asm.split('\n'))
+
+chars = []
+marks = {}
+offset = 0
+
+for ln, l in enumerate(lines):
+    if len(l) == 0:
+        continue
+    if l[-1] == ':':
+        if l[0] != '_':
+            print('error: marks must start with _ on line %d' % ln)
+            quit()
+        marks[l[:-1]] = offset + 512
+        continue
+    cs = l.split()
+    for c in cs:
+        if c[0] == '_':
+            chars.append(c)
+        elif len(c) == 1:
+            chars.append(int(c, 16) << 4)
+        elif len(c) == 2:
+            chars.append(int(c, 16))
+        else:
+            print('error: illegal byte %s on line %d' % (c, ln))
+            quit()
+        offset += 1
+
+c2 = []
+
+for i, c in enumerate(chars):
+    if type(c) == str:
+        continue
+    try:
+        if type(chars[i + 1]) == str:
+            actual = marks[chars[i + 1]]
+            c2.append(c | (actual >> 8))
+            c2.append(actual & 0xFF)
+        else:
+            c2.append(c)
+    except IndexError:
+        c2.append(c)
+
+b = bytes(c2)
+
+with open(ofile, 'wb') as fd:
+    fd.write(b)

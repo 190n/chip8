@@ -1,0 +1,18 @@
+; draw random character
+_top:
+C0 0F
+F0 29
+D1 15
+
+; set delay timer to 255 and wait until it's 0
+62 FF
+F2 15
+
+_loop:
+F2 07
+32 00
+1 _loop
+
+; clear screen and reset
+00 E0
+1 _top

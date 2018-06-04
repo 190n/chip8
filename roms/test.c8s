@@ -1,0 +1,14 @@
+A _ok_sprite
+D0 08
+60 09
+A _not_ok_sprite
+D0 18
+
+_loop:
+1 _loop
+
+_ok_sprite:
+E9 AA AA AC AC AA AA E9
+
+_not_ok_sprite:
+C3 E7 7E 3C 3C 7E E7 C3

@@ -1,0 +1,37 @@
+; subroutine test
+C0 FF ; random byte
+A _byte
+F0 55
+A _byte
+2 _sub
+C0 FF
+A _byte
+F0 55
+A _byte
+6D 20
+2 _sub
+
+_loop:
+1 _loop
+
+_sub: ; draw byte at I w/ position in VD, VE
+F0 65
+82 00
+81 06
+80 16
+81 06
+80 16
+
+F0 29
+DD E5
+
+63 0F
+82 32
+
+F2 29
+7D 05
+DD E5
+00 EE
+
+_byte:
+00

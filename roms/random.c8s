@@ -1,0 +1,33 @@
+_top:
+C0 01
+30 01
+1 _v0_is_0
+1 _v0_is_1
+
+_delay:
+62 80
+F2 15
+_delay_loop:
+F2 07
+42 00
+1 _top
+1 _delay_loop
+
+_v0_is_0:
+A _sprite0
+00 E0
+D1 11
+1 _delay
+
+_v0_is_1:
+A _sprite1
+00 E0
+D1 11
+1 _delay
+
+
+_sprite0:
+81
+
+_sprite1:
+FF

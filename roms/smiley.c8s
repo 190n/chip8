@@ -1,0 +1,10 @@
+A _sprite
+60 03
+61 05
+D0 18
+
+_loop:
+1 _loop
+
+_sprite:
+3C 42 81 A5 81 99 42 3C

@@ -1,0 +1,44 @@
+63 07 ; V3 = 7
+
+_top:
+A _pixel
+
+_draw_loop:
+82 00 ; V2 = V0
+82 14 ; V2 += V1
+82 32 ; V2 &= V3 (V3 = 7)
+42
+
+_offset:
+00 ; skip draw if V2 != 0
+D0 11 ; draw
+
+70 01
+40 40
+1 _x_overflow
+1 _draw_loop
+
+_x_overflow:
+60 00
+71 01
+41 20
+1 _y_overflow
+1 _draw_loop
+
+_y_overflow:
+A _offset
+F0 65 ; load into V0
+70 01 ; inc V0
+40 08 ; don't reset V0 unless it's 8
+60 00 ; reset V0
+A _offset
+F0 55 ; replace byte
+
+; reset everything else
+60 00
+61 00
+00 E0
+1 _top
+
+_pixel:
+80

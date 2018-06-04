@@ -1,0 +1,66 @@
+A _sprite ; load addr of sprite into I
+62 01 ; V2 = 1
+60 1F ; V0 = 31
+61 0F ; V1 = 15
+
+D0 12
+
+_loop:
+F3 0A ; wait for key press, store in V3
+
+; 5 = up
+; 7 = left
+; 8 = down
+; 9 = right
+
+43 05
+1 _up
+43 07
+1 _left
+43 08
+1 _down
+43 09
+1 _right
+
+_up:
+81 25
+3F 01
+61 00
+4F 01
+1 _loop
+A _vmove_sprite
+D0 13
+
+_left:
+80 25
+3F 01
+60 00
+4F 01
+1 _loop
+A _hmove_sprite
+D0 12
+
+_down:
+41 1E
+1 _loop
+A _vmove_sprite
+D0 13
+71 01
+1 _loop
+
+_right:
+41 3E
+1 _loop
+A _hmove_sprite
+D0 12
+70 01
+1 _loop
+
+_sprite:
+C0 C0
+
+_vmove_sprite:
+C0 00 C0
+
+_hmove_sprite:
+A0 A0
