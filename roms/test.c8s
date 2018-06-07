@@ -1,14 +1,475 @@
-A _ok_sprite
-D0 08
-60 09
-A _not_ok_sprite
-D0 18
+; can't test 00E0, FX18, FX29
+
+_jmp_test:
+2 _next_test
+60 10
+1 _jmp_test2
+2 _fail
+_jmp_test2:
+
+_call_test:
+2 _next_test
+60 20
+2 _call_sub1
+32 FF
+2 _fail
+33 FF
+2 _fail
+1 _skipnext_test
+
+_call_sub1:
+62 FF
+2 _call_sub2
+00 EE
+
+_call_sub2:
+63 FF
+00 EE
+
+_skipnext_test:
+2 _next_test
+60 30
+62 97
+32 97
+2 _fail
+60 40
+42 00
+2 _fail
+60 50
+63 97
+52 30
+2 _fail
+60 90
+63 33
+92 30
+2 _fail
+
+_const_test:
+2 _next_test
+60 60
+62 E3
+32 E3
+2 _fail
+
+_add_no_carry_test:
+2 _next_test
+60 70
+62 08
+72 08
+32 10
+2 _fail
+62 43
+72 C8
+32 0B
+2 _fail
+
+_arithmetic_test:
+2 _next_test
+; 8XY0
+60 80
+62 58
+83 20
+33 58
+2 _fail
+
+; 8XY1
+61 01
+63 33
+82 31
+32 7B
+2 _fail
+
+; 8XY2
+61 02
+62 58
+82 32
+32 10
+2 _fail
+
+; 8XY3
+61 03
+62 58
+82 33
+32 6B
+2 _fail
+
+; 8XY4
+61 04
+62 58
+82 34
+32 8B
+2 _fail
+3F 00
+2 _fail
+63 8B
+82 34
+32 16
+2 _fail
+3F 01
+2 _fail
+63 33
+
+; 8XY5
+61 05
+62 58
+82 35
+32 25
+2 _fail
+3F 01
+2 _fail
+82 35
+32 F2
+2 _fail
+3F 00
+2 _fail
+
+; 8XY6
+61 06
+82 36
+32 19
+2 _fail
+3F 01
+2 _fail
+63 32
+82 36
+32 19
+2 _fail
+3F 00
+2 _fail
+63 33
+
+; 8XY7
+61 07
+62 18
+82 37
+32 1B
+2 _fail
+3F 01
+2 _fail
+62 58
+82 37
+32 DB
+2 _fail
+3F 00
+2 _fail
+
+; 8XYE
+61 08
+82 3E
+32 66
+2 _fail
+3F 00
+2 _fail
+63 A5
+82 3E
+32 4A
+2 _fail
+3F 01
+2 _fail
+63 33
+
+_setI_test: ; also tests FX65
+2 _next_test
+A _test_mem
+F5 65
+60 A0
+32 F0
+2 _fail
+33 F1
+2 _fail
+34 F2
+2 _fail
+35 F3
+2 _fail
+
+_jmp_v0_test:
+60 02
+61 B0
+B _jmp_v0_sub
+
+_jmp_v0_sub:
+2 _fail
+
+_random_test: ; hard to test properly...this just keeps generating random 0-63 until it's 27...
+2 _next_test
+60 C0
+_random_loop:
+C2 3F
+32 1B
+1 _random_loop
+
+; _sprite_test: ; just checks for VF set to 1
+2 _next_test
+60 D0
+62 01
+A _pixel
+D1 21
+3F 00
+2 _fail
+D1 21
+3F 01
+2 _fail
+
+_input_test: ; not thorough
+2 _next_test
+62 0F
+64 1B
+A _ho_sprite
+D3 45
+73 08
+A _ld_sprite
+D3 45
+73 08
+A _f_sprite
+D3 45
+60 F0
+61 0A
+F5 0A
+52 50
+2 _fail
+60 E0
+61 9E
+E2 9E
+2 _fail
+61 A1
+62 0E
+E6 A1
+2 _fail
+D3 45
+63 08
+A _ld_sprite
+D3 45
+63 00
+A _ho_sprite
+D3 45
+
+_delay_test:
+2 _next_test
+60 F0
+61 15
+62 40
+F2 15
+61 07
+F2 07
+42 40
+2 _fail
+_delay_loop:
+F2 07
+32 00
+1 _delay_loop
+
+_inc_I_test:
+2 _next_test
+62 02
+A _before_test_mem
+F2 1E
+F5 65
+60 F0
+61 1E
+32 F0
+2 _fail
+33 F1
+2 _fail
+34 F2
+2 _fail
+35 F3
+2 _fail
+
+_bcd_test:
+2 _next_test
+62 E3
+A _dec
+F2 33
+A _before_dec
+F4 65
+60 F0
+61 33
+32 02
+2 _fail
+33 02
+2 _fail
+34 07
+2 _fail
+
+_mem_test:
+2 _next_test
+; FX65 was tested in the test for ANNN
+60 F0
+61 55
+A _dec
+F1 55
+60 00
+61 00
+F0 65
+30 07
+2 _fail
+A _dec
+F1 65
+30 F0
+2 _fail
+31 55
+2 _fail
+
+
+_pass:
+2 _next_test
+A _pa_sprite
+60 18
+61 0D
+D0 15
+A _ss_sprite
+60 20
+D0 15
+60 04
+62 34
+
+_fw_loop:
+6E 08
+61 1E
+A _fw_sprite0
+D0 12
+D2 12
+2 _wait
+
+61 1C
+D0 14
+D2 14
+2 _wait
+
+61 1A
+D0 14
+D2 14
+2 _wait
+
+61 18
+D0 14
+D2 14
+2 _wait
+
+61 17
+D0 13
+D2 13
+2 _wait
+
+61 16
+D0 12
+D2 12
+2 _wait
+
+61 15
+D0 12
+D2 12
+2 _wait
+
+61 13
+A _fw_sprite4
+D0 12
+D2 12
+2 _wait
+
+61 12
+A _fw_sprite5
+D0 14
+D2 14
+2 _wait
+
+A _fw_sprite6
+D0 15
+D2 15
+2 _wait
+
+A _fw_sprite7
+D0 15
+D2 15
+
+6E 80
+2 _wait
+
+1 _fw_loop
+
+_wait: ; waits for delay specified in VE. uses VD.
+FE 15
+_wait_loop:
+FD 07
+3D 00
+1 _wait_loop
+00 EE
+
+
+_fail:
+00 00 ; the opcode that failed should be in V0 and V1
+A _fail_sprite
+6D 38
+6E 18
+DD E8
 
 _loop:
 1 _loop
 
-_ok_sprite:
-E9 AA AA AC AC AA AA E9
+_pixel:
+80
 
-_not_ok_sprite:
+_current_x:
+00
+
+_fail_sprite:
 C3 E7 7E 3C 3C 7E E7 C3
+
+_next_test:
+A _current_x
+F0 65
+61 00
+A _pixel
+D0 11
+70 01
+40 3F
+60 00
+A _current_x
+F0 55
+A _zeros
+FE 65
+_before_test_mem:
+00 EE
+
+_test_mem:
+00 00 F0 F1
+_before_dec:
+F2 F3
+
+_dec:
+00 00 00
+
+_ho_sprite:
+AE AA EA AA AE
+
+_ld_sprite:
+8C 8A 8A 8A EC
+
+_f_sprite:
+38 20 30 20 20
+
+_pa_sprite:
+C4 AA CE 8A 8A
+
+_ss_sprite:
+66 88 44 22 CC
+
+_fw_sprite6: ; 5 rows, 9 row gap
+66 5A 81 5A
+
+_fw_sprite0: ; 2 rows
+_fw_sprite1: ; 4 rows, draw 3x, iters 2,3 have gaps 2,4
+_fw_sprite2: ; 3 rows, 6 row gap
+_fw_sprite3: ; 2 rows, draw iters 1-2 with gaps 8, 9
+24 24 24
+
+_fw_sprite4: ; 2 rows, 11 row gap
+24 5A
+
+_fw_sprite7: ; 5 rows, 9 row gap
+42 00 81 00
+
+_fw_sprite5: ; 4 rows, 10 row gap
+24 7E 5A 7E
+
+_zeros:

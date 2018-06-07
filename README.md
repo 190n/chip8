@@ -2,8 +2,9 @@ chip8
 =====
 
 A [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) emulator/interpreter written in
-C++. Uses SFML for graphics and input. Audio isn't really implemented yet; just
-prints "beep."
+C++. Written following [this tutorial](http://www.multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/),
+and uses some of its opcode implementations. Uses SFML for graphics and input.
+Audio isn't really implemented yet; just prints "beep."
 
 Usage: `./chip8 /path/to/rom`
 

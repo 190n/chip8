@@ -259,7 +259,7 @@ void chip8::op2NNN() {
 }
 
 void chip8::op3XNN() {
-    if (V[n1(opcode)] == (char)(opcode & 0x00FF)) {
+    if (V[n1(opcode)] == (unsigned char)(opcode & 0x00FF)) {
         pc += 4;
     } else {
         pc += 2;
@@ -267,7 +267,7 @@ void chip8::op3XNN() {
 }
 
 void chip8::op4XNN() {
-    if (V[n1(opcode)] != (char)(opcode & 0x00FF)) {
+    if (V[n1(opcode)] != (unsigned char)(opcode & 0x00FF)) {
         pc += 4;
     } else {
         pc += 2;
@@ -383,19 +383,21 @@ void chip8::opCXNN() {
 }
 
 void chip8::opDXYN() {
-    unsigned short x = V[n1(opcode)];
-    unsigned short y = V[n2(opcode)];
-    unsigned short height = n3(opcode);
-    unsigned short pixel;
+    unsigned char x = V[n1(opcode)];
+    unsigned char y = V[n2(opcode)];
+    unsigned char height = n3(opcode);
 
     V[0xF] = 0;
 
-    for (int yline = 0; yline < height; yline++) {
-        pixel = memory[I + yline];
-        for (int xline = 0; xline < 8; xline++) {
-            if ((pixel & (0x80 >> xline)) != 0) {
-                if (gfx[(x + xline + ((y + yline) * 64))] == 1) V[0xF] == 1;
-                gfx[x + xline + ((y + yline) * 64)] ^= 1;
+    for (int yl = 0; yl < height; yl++) {
+        unsigned char row = memory[I + yl];
+        for (int xl = 0; xl < 8; xl++) {
+            unsigned char pixel = ((row << xl) & (unsigned char)(0x80)) >> 7;
+            if (pixel) {
+                if (gfx[(y + yl) * 64 + x + xl]) {
+                    V[0xF] = 1;
+                }
+                gfx[(y + yl) * 64 + x + xl] ^= pixel;
             }
         }
     }
