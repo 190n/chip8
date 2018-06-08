@@ -5,17 +5,23 @@
 
 sf::RenderWindow* window;
 
-sf::RectangleShape pixels[64][32];
+sf::Uint8* pixels;
+sf::Texture tex;
+sf::Sprite sp;
 
 void initGfx() {
     window = new sf::RenderWindow(sf::VideoMode(64 * SCALE_FACTOR, 32 * SCALE_FACTOR), "CHIP-8");
-    for (int x = 0; x < 64; x++) {
-        for (int y = 0; y < 32; y++) {
-            pixels[x][y].setSize(sf::Vector2f(SCALE_FACTOR, SCALE_FACTOR));
-            pixels[x][y].setPosition(x * SCALE_FACTOR, y * SCALE_FACTOR);
-            pixels[x][y].setFillColor(sf::Color::Black);
+    pixels = new sf::Uint8[8192];
+    for (int i = 0; i < 8192; i++) {
+        if (i % 4 == 3) {
+            pixels[i] = 255;
+        } else {
+            pixels[i] = 0;
         }
     }
+    tex.create(64, 32);
+    sp.setTexture(tex);
+    sp.setScale(sf::Vector2f(SCALE_FACTOR, SCALE_FACTOR));
 }
 
 void drawGfx(chip8 cpu) {
@@ -23,15 +29,20 @@ void drawGfx(chip8 cpu) {
 
     for (int x = 0; x < 64; x++) {
         for (int y = 0; y < 32; y++) {
-            if (cpu.gfx[y * 64 + x]) {
-                pixels[x][y].setFillColor(sf::Color::White);
+            int i = y * 64 + x;
+            if (cpu.gfx[i]) {
+                pixels[i * 4] = 255;
+                pixels[i * 4 + 1] = 255;
+                pixels[i * 4 + 2] = 255;
             } else {
-                pixels[x][y].setFillColor(sf::Color::Black);
+                pixels[i * 4] = 0;
+                pixels[i * 4 + 1] = 0;
+                pixels[i * 4 + 2] = 0;
             }
-
-            window->draw(pixels[x][y]);
         }
     }
 
+    tex.update(pixels);
+    window->draw(sp);
     window->display();
 }

@@ -332,7 +332,7 @@ D0 15
 62 34
 
 _fw_loop:
-6E 08
+6E 40
 61 1E
 A _fw_sprite0
 D0 12

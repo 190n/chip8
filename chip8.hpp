@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CHIP8_HPP
+#define CHIP8_HPP
 
 class chip8 {
     unsigned char memory[4096], V[16];
@@ -71,8 +72,8 @@ public:
     void debug();
     void opInvalid();
 
-    static bool opcodeTablesBulit;
+    static bool opcodeTablesBuilt;
     static void buildOpcodeTables();
 };
 
-bool chip8::opcodeTablesBulit = false;
+#endif

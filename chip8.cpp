@@ -60,6 +60,7 @@ inline unsigned char n3(unsigned short n) {
     return n & 0x000F;
 }
 
+bool chip8::opcodeTablesBuilt = false;
 void chip8::buildOpcodeTables() {
     for (int i = 0; i < 256; i++) {
         if (i == 0) {
@@ -104,10 +105,12 @@ void chip8::buildOpcodeTables() {
             opcodesF[i] = &chip8::opInvalid;
         }
     }
+
+    opcodeTablesBuilt = true;
 }
 
 void chip8::init() {
-    if (!opcodeTablesBulit) {
+    if (!opcodeTablesBuilt) {
         buildOpcodeTables();
     }
 
