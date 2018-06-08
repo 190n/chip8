@@ -1,4 +1,4 @@
-; can't test 00E0, FX18, FX29
+; can't test FX18, FX29
 
 _jmp_test:
 2 _next_test
@@ -198,7 +198,7 @@ C2 3F
 32 1B
 1 _random_loop
 
-; _sprite_test: ; just checks for VF set to 1
+; _sprite_test: ; just checks for VF set to 1 and screen clear
 2 _next_test
 60 D0
 62 01
@@ -209,6 +209,14 @@ D1 21
 D1 21
 3F 01
 2 _fail
+D1 21
+00 E0
+D1 21
+3F 00
+2 _fail
+2 _redraw_progress
+62 01
+D1 21
 
 _input_test: ; not thorough
 2 _next_test
@@ -414,6 +422,19 @@ _current_x:
 
 _fail_sprite:
 C3 E7 7E 3C 3C 7E E7 C3
+
+_redraw_progress:
+A _current_x
+F0 65
+61 00
+62 00
+A _pixel
+_redraw_loop:
+D2 11
+72 01
+52 00
+1 _redraw_loop
+00 EE
 
 _next_test:
 A _current_x

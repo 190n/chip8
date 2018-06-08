@@ -44,4 +44,5 @@ TODO
 
 - [x] array of function pointers instead of massive switch statement
 - [ ] actual audio support
-- [ ] test all the opcodes
+- [x] test all the opcodes
+- [ ] SUPER CHIP-8 opcodes

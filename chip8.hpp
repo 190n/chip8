@@ -20,10 +20,12 @@ public:
     void cycle();
     void setKeys();
 
+    // * = SUPER CHIP-8 opcode
 
     void op0(); // jump to proper 00XX opcode
     void op00E0(); // clear screen
     void op00EE(); // return from subroutine
+    void op00FD(); // * exit
     void op0000(); // debug
     
     void op1NNN(); // jump

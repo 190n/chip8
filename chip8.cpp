@@ -68,6 +68,8 @@ void chip8::buildOpcodeTables() {
             opcodes0[i] = &chip8::op00E0;
         } else if (i == 0xEE) {
             opcodes0[i] = &chip8::op00EE;
+        } else if (i == 0xFD) {
+            opcodes0[i] = &chip8::op00FD;
         } else {
             opcodes0[i] = &chip8::opInvalid;
         }
@@ -241,6 +243,11 @@ void chip8::op00E0() {
 void chip8::op00EE() {
     pc = stack[--sp] + 2;
     stack[sp] = 0;
+}
+
+void chip8::op00FD() {
+    printf("exiting per application request\n");
+    exit(0);
 }
 
 void chip8::op0000() {
