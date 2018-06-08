@@ -12,6 +12,9 @@ class chip8 {
 
     unsigned char key[16];
 
+    // for 60Hz timers
+    long last_ms;
+
 public:
     bool drawFlag = false;
     unsigned char gfx[64 * 32];

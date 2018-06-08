@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
+#include <chrono>
 #include "chip8.hpp"
 #include "input.hpp"
+
+using namespace std::chrono;
 
 unsigned char chip8_fontset[80] = {
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -116,6 +120,11 @@ void chip8::init() {
 
     srand(time(NULL));
 
+    // https://stackoverflow.com/a/32874098
+    auto now = system_clock::now();
+    auto ms = duration_cast<milliseconds>(now.time_since_epoch()) - duration_cast<seconds>(now.time_since_epoch());
+    last_ms = ms.count();
+
     pc = 0x200;
     opcode = 0;
     I = 0;
@@ -169,15 +178,26 @@ void chip8::cycle() {
     opcodeFunc f = opcodes[n0(opcode)];
     (*this.*f)();
 
-    if (delay_timer > 0) {
-        delay_timer--;
-    }
+    if (delay_timer > 0 || sound_timer > 0) {
+        auto now = system_clock::now();
+        auto ms = duration_cast<milliseconds>(now.time_since_epoch()) - duration_cast<seconds>(now.time_since_epoch());
 
-    if (sound_timer > 0) {
-        if (sound_timer == 1) {
-            printf("beep!\n");
+        if (fmod(ms.count(), 16.5f) < fmod(last_ms, 16.5f)) {
+            // decrement the timers
+            if (delay_timer > 0) {
+                delay_timer--;
+            }
+
+            if (sound_timer > 0) {
+                if (sound_timer == 1) {
+                    printf("beep!\n");
+                }
+                sound_timer--;
+            }
         }
-        sound_timer--;
+
+
+        last_ms = ms.count();
     }
 }
 
