@@ -69,12 +69,24 @@ void chip8::buildOpcodeTables() {
     for (int i = 0; i < 256; i++) {
         if (i == 0) {
             opcodes0[i] = &chip8::op0000;
+        } else if (i == 0xB0) {
+            opcodes0[i] = &chip8::op00BN;
+        } else if (i == 0xC0) {
+            opcodes0[i] = &chip8::op00CN;
         } else if (i == 0xE0) {
             opcodes0[i] = &chip8::op00E0;
         } else if (i == 0xEE) {
             opcodes0[i] = &chip8::op00EE;
+        } else if (i == 0xFB) {
+            opcodes0[i] = &chip8::op00FB;
+        } else if (i == 0xFC) {
+            opcodes0[i] = &chip8::op00FC;
         } else if (i == 0xFD) {
             opcodes0[i] = &chip8::op00FD;
+        } else if (i == 0xFE) {
+            opcodes0[i] = &chip8::op00FE;
+        } else if (i == 0xFF) {
+            opcodes0[i] = &chip8::op00FF;
         } else {
             opcodes0[i] = &chip8::opInvalid;
         }
@@ -99,12 +111,18 @@ void chip8::buildOpcodeTables() {
             opcodesF[i] = &chip8::opFX1E;
         } else if (i == 0x29) {
             opcodesF[i] = &chip8::opFX29;
+        } else if (i == 0x30) {
+            opcodesF[i] = &chip8::opFX30;
         } else if (i == 0x33) {
             opcodesF[i] = &chip8::opFX33;
         } else if (i == 0x55) {
             opcodesF[i] = &chip8::opFX55;
         } else if (i == 0x65) {
             opcodesF[i] = &chip8::opFX65;
+        } else if (i == 0x75) {
+            opcodesF[i] = &chip8::opFX75;
+        } else if (i == 0x85) {
+            opcodesF[i] = &chip8::opFX85;
         } else {
             opcodesF[i] = &chip8::opInvalid;
         }
@@ -255,6 +273,16 @@ void chip8::op0() {
     (*this.*f)();
 }
 
+void chip8::op00BN() {
+    printf("stub 00BN\n");
+    pc += 2;
+}
+
+void chip8::op00CN() {
+    printf("stub 00CN\n");
+    pc += 2;
+}
+
 void chip8::op00E0() {
     for (int i = 0; i < 2048; i++) {
         gfx[i] = 0;
@@ -268,9 +296,29 @@ void chip8::op00EE() {
     stack[sp] = 0;
 }
 
+void chip8::op00FB() {
+    printf("stub 00FB\n");
+    pc += 2;
+}
+
+void chip8::op00FC() {
+    printf("stub 00FC\n");
+    pc += 2;
+}
+
 void chip8::op00FD() {
     printf("exiting per application request\n");
     exit(0);
+}
+
+void chip8::op00FE() {
+    printf("stub 00FE\n");
+    pc += 2;
+}
+
+void chip8::op00FF() {
+    printf("stub 00FF\n");
+    pc += 2;
 }
 
 void chip8::op0000() {
@@ -413,6 +461,10 @@ void chip8::opCXNN() {
 }
 
 void chip8::opDXYN() {
+    if (n3(opcode) == 0) {
+        return opDXY0();
+    }
+
     unsigned char x = V[n1(opcode)];
     unsigned char y = V[n2(opcode)];
     unsigned char height = n3(opcode);
@@ -433,6 +485,11 @@ void chip8::opDXYN() {
     }
 
     drawFlag = true;
+    pc += 2;
+}
+
+void chip8::opDXY0() {
+    printf("stub DXY0\n");
     pc += 2;
 }
 
@@ -503,6 +560,21 @@ void chip8::opFX1E() {
 
 void chip8::opFX29() {
     I = V[n1(opcode)] * 5 + 80;
+    pc += 2;
+}
+
+void chip8::opFX30() {
+    printf("stub FX30\n");
+    pc += 2;
+}
+
+void chip8::opFX75() {
+    printf("stub FX75\n");
+    pc += 2;
+}
+
+void chip8::opFX85() {
+    printf("stub FX85\n");
     pc += 2;
 }
 

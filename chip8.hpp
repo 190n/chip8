@@ -25,11 +25,18 @@ public:
     void setKeys();
 
     // * = SUPER CHIP-8 opcode
+    // https://raw.githubusercontent.com/JonRodtang/super-chip-8/master/REFERENCE.md
 
     void op0(); // jump to proper 00XX opcode
+    void op00BN(); // * scroll display N lines up (N/2 in low res mode)
+    void op00CN(); // * scroll display N lines down (N/2 in low res mode)
     void op00E0(); // clear screen
     void op00EE(); // return from subroutine
+    void op00FB(); // * scroll display 4 pixels right (2 in low res mode)
+    void op00FC(); // * scroll display 4 pixels left (2 in low res mode)
     void op00FD(); // * exit
+    void op00FE(); // * disable extended screen mode
+    void op00FF(); // * enable extended screen mode
     void op0000(); // debug
     
     void op1NNN(); // jump
@@ -56,6 +63,7 @@ public:
     void opBNNN(); // jump to NNN + V0
     void opCXNN(); // VX = rand() & NN
     void opDXYN(); // draw N-row sprite from I at (VX, VY)
+    void opDXY0(); // draw 16x16 sprite from I at (VX, VY) (8x16 in low res mode)
     
     void opInput(); // execute proper E0XX opcode
     void opEX9E(); // skip next instruction if key in VX is pressed
@@ -68,9 +76,12 @@ public:
     void opFX18(); // sound timer = VX
     void opFX1E(); // I += VX
     void opFX29(); // I = sprite for char in VX
+    void opFX30(); // I = 10-row sprite for char in VX
     void opFX33(); // decimal representation of VX into I, I+1, I+2
     void opFX55(); // dump registers into memory
     void opFX65(); // load memory into registers
+    void opFX75(); // dump registers into RPL user flags (X < 8)
+    void opFX85(); // load RPL user flags into registers (X < 8)
 
     void debug();
     void opInvalid();
