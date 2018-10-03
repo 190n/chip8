@@ -417,8 +417,8 @@ void chip8::op8XY5() {
 }
 
 void chip8::op8XY6() {
-    V[0xF] = V[n2(opcode)] & 0x01;
-    V[n1(opcode)] = V[n2(opcode)] >> 1;
+    V[0xF] = V[n1(opcode)] & 0x01;
+    V[n1(opcode)] = V[n1(opcode)] >> 1;
     pc += 2;
 }
 
@@ -433,8 +433,8 @@ void chip8::op8XY7() {
 }
 
 void chip8::op8XYE() {
-    V[0xF] = (V[n2(opcode)] & 0xF0) >> 7;
-    V[n1(opcode)] = V[n2(opcode)] << 1;
+    V[0xF] = (V[n1(opcode)] & 0xF0) >> 7;
+    V[n1(opcode)] = V[n1(opcode)] << 1;
     pc += 2;
 }
 
@@ -586,17 +586,23 @@ void chip8::opFX33() {
 }
 
 void chip8::opFX55() {
+    unsigned short old = I;
     for (int n = 0; n <= n1(opcode); n++) {
         memory[I] = V[n];
         I++;
     }
+
+    I = old;
     pc += 2;
 }
 
 void chip8::opFX65() {
+    unsigned short old = I;
     for (int n = 0; n <= n1(opcode); n++) {
         V[n] = memory[I];
         I++;
     }
+
+    I = old;
     pc += 2;
 }

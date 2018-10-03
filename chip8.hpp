@@ -54,9 +54,9 @@ public:
     void op8XY3(); // VX ^= VY
     void op8XY4(); // VX += VY, VF = 1 if carry
     void op8XY5(); // VX -= VY, VF = 0 if borrow
-    void op8XY6(); // VX = VY >> 1, VF = least significant bit of VY
+    void op8XY6(); // VX = VX >> 1, VF = least significant bit of VY
     void op8XY7(); // VX = VY - VX, VF = 0 if borrow
-    void op8XYE(); // VX = VY << 1, VF = most significant bit of VY
+    void op8XYE(); // VX = VX << 1, VF = most significant bit of VY
 
     void op9XY0(); // skip next instruction if VX != VY
     void opANNN(); // I = constant NNN

@@ -125,12 +125,13 @@ _arithmetic_test:
 
 ; 8XY6
 61 06
-82 36
+62 33
+82 06
 32 19
 2 _fail
 3F 01
 2 _fail
-63 32
+62 32
 82 36
 32 19
 2 _fail
@@ -155,13 +156,14 @@ _arithmetic_test:
 
 ; 8XYE
 61 08
-82 3E
+62 33
+82 0E
 32 66
 2 _fail
 3F 00
 2 _fail
-63 A5
-82 3E
+62 A5
+82 0E
 32 4A
 2 _fail
 3F 01
@@ -308,8 +310,10 @@ A _dec
 F1 55
 60 00
 61 00
-F0 65
-30 07
+F1 65
+30 F0 ; apparently you don't actually increment I
+2 _fail
+31 55
 2 _fail
 A _dec
 F1 65

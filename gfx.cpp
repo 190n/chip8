@@ -25,6 +25,15 @@ void initGfx() {
 }
 
 void drawGfx(chip8 cpu) {
+    sf::Event ev;
+    while (window->pollEvent(ev)) {
+        if (ev.type == sf::Event::Closed) {
+            window->close();
+            printf("Quit.\n");
+            exit(0);
+        }
+    }
+
     window->clear(sf::Color::Black);
 
     for (int x = 0; x < 64; x++) {
